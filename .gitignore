@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Virtual environment
+.venv
+venv
+
+
+# Trazas
+__pycache__
+
+# VS Code / PyCharm
+.vscode/

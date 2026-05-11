@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic
+streamlit
+requests
+pandas
+gnews
+langchain
+langchain-openai
+langchain-core
+dotenv
+unstructured[pdf]
+langchain-chroma
+chromadb
+python-multipart
+scikit-learn
+openpyxl
