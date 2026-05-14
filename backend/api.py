@@ -10,6 +10,7 @@ from backend.RAG.engine import RAGEngine
 
 # Importar script del recomendador de equipamientos
 from backend.recomendadores.recomendador_equi import RecomendadorCultural, PerfilUsuario, RespuestaRecomendacion
+from backend.recomendadores.recomendador_ubi import RecomendadorUbicacion, PerfilEquipamiento, RespuestaUbicacion
 
 # Librerías noticias
 from gnews import GNews
@@ -45,8 +46,9 @@ app = FastAPI(title="Super APP Inteligencia Cultural")
 # --- INICIALIZAR EL RAG ---
 rag_engine = RAGEngine()
 
-# --- INICIALIZAR RECOMENDADOR ---
+# --- INICIALIZAR RECOMENDADORES ---
 recomendador_engine = RecomendadorCultural(db_path="./data/BDD_equipamientos_v9.xlsx")
+recomendador_ubicacion_engine = RecomendadorUbicacion(db_path="./data/BDD_territorios_v4.xlsx")
 
 # 3. Configuración de endpoints: 
 # --- ENDPOINT NOTICIAS --- 
@@ -142,6 +144,18 @@ async def recomendar_equipamientos(perfil: PerfilUsuario):
     """
     try:
         resultado = recomendador_engine.recomendar(perfil)
+        return resultado
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# --- ENDPOINT RECOMENDADOR UBICACION ---
+@app.post("/recomendar/ubicacion", response_model=RespuestaUbicacion, tags=["Recomendador de ubicaciones"])
+async def recomendar_ubicaciones(perfil: PerfilEquipamiento):
+    """
+    Recibe las características del equipamiento y devuelve los territorios más similares.
+    """
+    try:
+        resultado = recomendador_ubicacion_engine.recomendar(perfil)
         return resultado
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
